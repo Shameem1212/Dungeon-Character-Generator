@@ -7,9 +7,10 @@
 
 
 
+require('dotenv').config();
 
 const express = require('express'); //handles HTTP requests and responses
-const { ApolloServer} = require('apollo/server'); //framework for building GraphQL servers
+const { ApolloServer} = require('@apollo/server'); //framework for building GraphQL servers
 const { expressMiddleware } = require('@apollo/server/express4'); // middleware to integrate Apollo Server with Express
 const mongoose = require('mongoose'); //bridges javascript and Mongodb
 const cors = require('cors'); // communicates frontend on port 3000 with backend on port 4000
@@ -17,7 +18,7 @@ const dotnenv = require('dotenv'); //stores our secrets in env files
 
 const typeDefs = require('./graphql/typeDefs'); //defines the graphql schema and types, the info the client asks for
 const resolvers = require('./graphql/resolvers'); //resolvers handle the logic for fetching the data requested by the client, they connect the schema to the database
-const { authMiddleware} = require('./utils/auth'); //checks for authentication tokens in requests and verifies them
+//const { authMiddleware} = require('./utils/auth'); //checks for authentication tokens in requests and verifies them
 
 dotnenv.config(); //loads our dirty secrets
 
@@ -29,6 +30,7 @@ const startServer = async ()=> //makes sure everything starts at the same timew
     const server = new ApolloServer({ 
         typeDefs,
         resolvers,
+        context: () => ({}) //to br removed
 
     });
 
@@ -38,8 +40,8 @@ const startServer = async ()=> //makes sure everything starts at the same timew
     app.use(express.json()); // Parse JSON bodies
 
 
-    app.use('/graphql', exoressMiddleware(server, { //sets up the /graphql endpoint for Apollo Server
-        context: ({ req }) =>  authMiddleware(req),  // every requests runs authMiddleware to check for authentication tokens and verify them
+    app.use('/graphql', expressMiddleware(server, { //sets up the /graphql endpoint for Apollo Server
+        context: () => ({}), //context: ({ req }) =>  authMiddleware(req),  // every requests runs authMiddleware to check for authentication tokens and verify them
 
         }));
         await mongoose.connect(process.env.MONGODB_URI); //connects to mongo database
