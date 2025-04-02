@@ -38,7 +38,7 @@ const startServer = async ()=> //makes sure everything starts at the same timew
     app.use(express.json()); // Parse JSON bodies
 
 
-    app.use('/graphql', exoressMiddleware(server, { //sets up the /graphql endpoint for Apollo Server
+    app.use('/graphql', expressMiddleware(server, { //sets up the /graphql endpoint for Apollo Server
         context: ({ req }) =>  authMiddleware(req),  // every requests runs authMiddleware to check for authentication tokens and verify them
 
         }));
