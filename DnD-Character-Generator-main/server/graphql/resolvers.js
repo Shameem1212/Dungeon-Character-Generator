@@ -2,7 +2,7 @@ const Character = require("../models/Character.js");
 
 const resolvers = {
   Query: {
-    
+    // Get all characters 
     getCharacters: async () => {
       try {
         return await Character.find();
