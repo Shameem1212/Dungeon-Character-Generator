@@ -64,6 +64,16 @@ const resolvers = {
       // If the user is not authenticated, throw an AuthenticationError
       throw new AuthenticationError('Could not authenticate user.');
     },
+    getRaces: async () => {
+      try {
+        const response = await fetch('https://www.dnd5eapi.co/api/races');
+        const data = await response.json();
+        return data.results;
+      } catch (error) {
+        console.error('Error fetching races:', error);
+        return [];
+      }
+    }
   },
   Mutation: {
     addUser: async (_parent: any, { input }: AddUserArgs) => {

@@ -60,5 +60,4 @@ const typeDefs = `
     removeComment(thoughtId: ID!, commentId: ID!): Thought
   }
 `;
-
 export default typeDefs;
