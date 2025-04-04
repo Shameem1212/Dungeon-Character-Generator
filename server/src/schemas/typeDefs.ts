@@ -41,10 +41,10 @@ const typeDefs = `
     name: String!
     url: String!
   }
-    type Class {
-  index: String
-  name: String
-  url: String
+     type Class {
+    index: String!
+    name: String!
+    url: String!
   }
 
   type Query {

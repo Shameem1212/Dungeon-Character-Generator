@@ -1,13 +1,13 @@
-import { Thought, User } from '../models/index.js';
-import { signToken, AuthenticationError } from '../utils/auth.js'; 
+import { Thought, User } from "../models/index.js";
+import { signToken, AuthenticationError } from "../utils/auth.js";
 
 // Define types for the arguments
 interface AddUserArgs {
-  input:{
+  input: {
     username: string;
     email: string;
     password: string;
-  }
+  };
 }
 
 interface LoginUserArgs {
@@ -24,10 +24,10 @@ interface ThoughtArgs {
 }
 
 interface AddThoughtArgs {
-  input:{
+  input: {
     thoughtText: string;
     thoughtAuthor: string;
-  }
+  };
 }
 
 interface AddCommentArgs {
@@ -43,10 +43,10 @@ interface RemoveCommentArgs {
 const resolvers = {
   Query: {
     users: async () => {
-      return User.find().populate('thoughts');
+      return User.find().populate("thoughts");
     },
     user: async (_parent: any, { username }: UserArgs) => {
-      return User.findOne({ username }).populate('thoughts');
+      return User.findOne({ username }).populate("thoughts");
     },
     thoughts: async () => {
       return await Thought.find().sort({ createdAt: -1 });
@@ -59,18 +59,18 @@ const resolvers = {
     me: async (_parent: any, _args: any, context: any) => {
       // If the user is authenticated, find and return the user's information along with their thoughts
       if (context.user) {
-        return User.findOne({ _id: context.user._id }).populate('thoughts');
+        return User.findOne({ _id: context.user._id }).populate("thoughts");
       }
       // If the user is not authenticated, throw an AuthenticationError
-      throw new AuthenticationError('Could not authenticate user.');
+      throw new AuthenticationError("Could not authenticate user.");
     },
     getRaces: async () => {
       try {
-        const response = await fetch('https://www.dnd5eapi.co/api/races');
+        const response = await fetch("https://www.dnd5eapi.co/api/races");
         const data = await response.json();
         return data.results;
       } catch (error) {
-        console.error('Error fetching races:', error);
+        console.error("Error fetching races:", error);
         return [];
       }
     },
@@ -93,38 +93,42 @@ const resolvers = {
     addUser: async (_parent: any, { input }: AddUserArgs) => {
       // Create a new user with the provided username, email, and password
       const user = await User.create({ ...input });
-    
+
       // Sign a token with the user's information
       const token = signToken(user.username, user.email, user._id);
-    
+
       // Return the token and the user
       return { token, user };
     },
-    
+
     login: async (_parent: any, { email, password }: LoginUserArgs) => {
       // Find a user with the provided email
       const user = await User.findOne({ email });
-    
+
       // If no user is found, throw an AuthenticationError
       if (!user) {
-        throw new AuthenticationError('Could not authenticate user.');
+        throw new AuthenticationError("Could not authenticate user.");
       }
-    
+
       // Check if the provided password is correct
       const correctPw = await user.isCorrectPassword(password);
-    
+
       // If the password is incorrect, throw an AuthenticationError
       if (!correctPw) {
-        throw new AuthenticationError('Could not authenticate user.');
+        throw new AuthenticationError("Could not authenticate user.");
       }
-    
+
       // Sign a token with the user's information
       const token = signToken(user.username, user.email, user._id);
-    
+
       // Return the token and the user
       return { token, user };
     },
-    addThought: async (_parent: any, { input }: AddThoughtArgs, context: any) => {
+    addThought: async (
+      _parent: any,
+      { input }: AddThoughtArgs,
+      context: any
+    ) => {
       if (context.user) {
         const thought = await Thought.create({ ...input });
 
@@ -136,9 +140,13 @@ const resolvers = {
         return thought;
       }
       throw AuthenticationError;
-      ('You need to be logged in!');
+      ("You need to be logged in!");
     },
-    addComment: async (_parent: any, { thoughtId, commentText }: AddCommentArgs, context: any) => {
+    addComment: async (
+      _parent: any,
+      { thoughtId, commentText }: AddCommentArgs,
+      context: any
+    ) => {
       if (context.user) {
         return Thought.findOneAndUpdate(
           { _id: thoughtId },
@@ -155,14 +163,18 @@ const resolvers = {
       }
       throw AuthenticationError;
     },
-    removeThought: async (_parent: any, { thoughtId }: ThoughtArgs, context: any) => {
+    removeThought: async (
+      _parent: any,
+      { thoughtId }: ThoughtArgs,
+      context: any
+    ) => {
       if (context.user) {
         const thought = await Thought.findOneAndDelete({
           _id: thoughtId,
           thoughtAuthor: context.user.username,
         });
 
-        if(!thought){
+        if (!thought) {
           throw AuthenticationError;
         }
 
@@ -175,7 +187,11 @@ const resolvers = {
       }
       throw AuthenticationError;
     },
-    removeComment: async (_parent: any, { thoughtId, commentId }: RemoveCommentArgs, context: any) => {
+    removeComment: async (
+      _parent: any,
+      { thoughtId, commentId }: RemoveCommentArgs,
+      context: any
+    ) => {
       if (context.user) {
         return Thought.findOneAndUpdate(
           { _id: thoughtId },
