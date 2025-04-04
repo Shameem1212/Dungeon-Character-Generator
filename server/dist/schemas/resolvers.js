@@ -1,12 +1,12 @@
-import { Thought, User } from '../models/index.js';
-import { signToken, AuthenticationError } from '../utils/auth.js';
+import { Thought, User } from "../models/index.js";
+import { signToken, AuthenticationError } from "../utils/auth.js";
 const resolvers = {
     Query: {
         users: async () => {
-            return User.find().populate('thoughts');
+            return User.find().populate("thoughts");
         },
         user: async (_parent, { username }) => {
-            return User.findOne({ username }).populate('thoughts');
+            return User.findOne({ username }).populate("thoughts");
         },
         thoughts: async () => {
             return await Thought.find().sort({ createdAt: -1 });
@@ -19,22 +19,33 @@ const resolvers = {
         me: async (_parent, _args, context) => {
             // If the user is authenticated, find and return the user's information along with their thoughts
             if (context.user) {
-                return User.findOne({ _id: context.user._id }).populate('thoughts');
+                return User.findOne({ _id: context.user._id }).populate("thoughts");
             }
             // If the user is not authenticated, throw an AuthenticationError
-            throw new AuthenticationError('Could not authenticate user.');
+            throw new AuthenticationError("Could not authenticate user.");
         },
         getRaces: async () => {
             try {
-                const response = await fetch('https://www.dnd5eapi.co/api/races');
+                const response = await fetch("https://www.dnd5eapi.co/api/races");
                 const data = await response.json();
                 return data.results;
             }
             catch (error) {
-                console.error('Error fetching races:', error);
+                console.error("Error fetching races:", error);
                 return [];
             }
-        }
+        },
+        getClasses: async () => {
+            try {
+                const response = await fetch("https://www.dnd5eapi.co/api/classes");
+                const data = await response.json();
+                return data.results;
+            }
+            catch (error) {
+                console.error("Error fetching classes:", error);
+                return [];
+            }
+        },
     },
     Mutation: {
         addUser: async (_parent, { input }) => {
@@ -50,13 +61,13 @@ const resolvers = {
             const user = await User.findOne({ email });
             // If no user is found, throw an AuthenticationError
             if (!user) {
-                throw new AuthenticationError('Could not authenticate user.');
+                throw new AuthenticationError("Could not authenticate user.");
             }
             // Check if the provided password is correct
             const correctPw = await user.isCorrectPassword(password);
             // If the password is incorrect, throw an AuthenticationError
             if (!correctPw) {
-                throw new AuthenticationError('Could not authenticate user.');
+                throw new AuthenticationError("Could not authenticate user.");
             }
             // Sign a token with the user's information
             const token = signToken(user.username, user.email, user._id);
@@ -70,7 +81,7 @@ const resolvers = {
                 return thought;
             }
             throw AuthenticationError;
-            ('You need to be logged in!');
+            ("You need to be logged in!");
         },
         addComment: async (_parent, { thoughtId, commentText }, context) => {
             if (context.user) {
