@@ -79,3 +79,12 @@ export const GET_RACES = gql`
     }
   }
 `;
+export const GET_CLASSES = gql`
+  query GetClasses {
+    getClasses {
+      index
+      name
+      url
+    }
+  }
+`;
