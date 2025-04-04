@@ -25,6 +25,8 @@ const CreateCharacterPage = () => {
     e.preventDefault();
     console.log('Creating character:', formState);
     // TODO: hook up ADD_CHARACTER mutation here
+
+    //butts
   };
 
   return (
@@ -90,7 +92,7 @@ const CreateCharacterPage = () => {
             )}
           </select>
         </div>
-
+         
         {/* Level input */}
         <input
           className="w-full p-2 border rounded"
