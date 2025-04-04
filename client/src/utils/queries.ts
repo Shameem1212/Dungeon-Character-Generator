@@ -36,15 +36,7 @@ export const GET_CHARACTERS = gql`
     }
   }
 `;
-export const GET_CLASSES = gql`
-  query GetClasses {
-    getClasses {
-      index
-      name
-      url
-    }
-  }
-`;
+
 
 
 export const QUERY_SINGLE_THOUGHT = gql`

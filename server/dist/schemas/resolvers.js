@@ -37,12 +37,12 @@ const resolvers = {
         },
         getClasses: async () => {
             try {
-                const response = await fetch("https://www.dnd5eapi.co/api/classes");
+                const response = await fetch('https://www.dnd5eapi.co/api/classes');
                 const data = await response.json();
                 return data.results;
             }
             catch (error) {
-                console.error("Error fetching classes:", error);
+                console.error('Error fetching classes:', error);
                 return [];
             }
         },
