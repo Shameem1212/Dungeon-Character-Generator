@@ -33,11 +33,11 @@ const CharacterDashboard = () => {
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-3xl font-bold">My Characters</h1>
         <Link
-  to="/create-character"
-  className="btn btn-primary"
->
-  + Create Character
-</Link>
+      to="/create-character"
+      className="btn btn-primary"
+    >
+      + Create Character
+    </Link>
 
       </div>
 
