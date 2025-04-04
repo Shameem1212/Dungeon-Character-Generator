@@ -76,3 +76,13 @@ export const GET_CLASSES = gql`
     }
   }
 `;
+export const GET_SKILLS = gql`
+  query GetSkills {
+    getSkills {
+      index
+      name
+      url
+    }
+  }
+`;
+

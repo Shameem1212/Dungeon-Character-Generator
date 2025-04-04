@@ -10,6 +10,7 @@ import Profile from "./pages/Profile";
 import ErrorPage from "./pages/Error";
 import RacesPage from "./pages/Races.js";
 import ClassesPage from "./pages/Classes.js";
+import SkillsPage from "./pages/Skills.js";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
         path: "/Classes",
         element: <ClassesPage />,
       },
+      {
+        path: "/Skills",
+        element: <SkillsPage />,
+      }
     ],
   },
 ]);

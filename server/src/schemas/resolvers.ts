@@ -84,6 +84,16 @@ const resolvers = {
         return [];
       }
     },
+    getSkills: async () => {
+      try {
+        const response = await fetch("https://www.dnd5eapi.co/api/skills");
+        const data = await response.json();
+        return data.results;
+      } catch (error) {
+        console.error("Error fetching skills:", error);
+        return [];
+      }
+    },
   },
   Mutation: {
     addUser: async (_parent: any, { input }: AddUserArgs) => {

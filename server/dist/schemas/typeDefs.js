@@ -46,6 +46,11 @@ const typeDefs = `
     name: String!
     url: String!
   }
+     type Skill {
+    index: String!
+    name: String!
+    url: String!
+  }
 
   type Query {
     users: [User]
@@ -55,6 +60,7 @@ const typeDefs = `
     me: User
     getRaces: [Race]
     getClasses: [Class]
+    getSkills: [Skill]
   }
 
   type Mutation {
