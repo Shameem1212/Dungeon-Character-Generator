@@ -9,6 +9,7 @@ import SingleThought from "./pages/SingleThought";
 import Profile from "./pages/Profile";
 import ErrorPage from "./pages/Error";
 import RacesPage from "./pages/Races.js";
+import ClassesPage from "./pages/Classes.js";
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
       {
         path: "/Races",
         element: <RacesPage />,
+      },
+      {
+        path: "/Classes",
+        element: <ClassesPage />,
       },
     ],
   },
