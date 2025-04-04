@@ -25,6 +25,18 @@ export const QUERY_THOUGHTS = gql`
     }
   }
 `;
+export const GET_CHARACTERS = gql`
+  query GetCharacters {
+    getCharacters {
+      _id
+      name
+      class
+      race
+      level
+    }
+  }
+`;
+
 
 export const QUERY_SINGLE_THOUGHT = gql`
   query getSingleThought($thoughtId: ID!) {

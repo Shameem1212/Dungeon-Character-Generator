@@ -11,6 +11,13 @@ export const LOGIN_USER = gql`
     }
   }
 `;
+export const DELETE_CHARACTER = gql`
+  mutation DeleteCharacter($id: ID!) {
+    deleteCharacter(id: $id) {
+      _id
+    }
+  }
+`;
 
 export const ADD_USER = gql`
   mutation Mutation($input: UserInput!) {

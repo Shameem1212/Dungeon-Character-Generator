@@ -23,7 +23,7 @@ const SingleThought = () => {
       <h3 className="card-header bg-dark text-light p-2 m-0">
         {thought.thoughtAuthor} <br />
         <span style={{ fontSize: '1rem' }}>
-          had this thought on {new Date(Number(thought.createdAt)).toLocaleString()}
+          had this thought butts {new Date(Number(thought.createdAt)).toLocaleString()}
         </span>
       </h3>
       <div className="bg-light py-4">
