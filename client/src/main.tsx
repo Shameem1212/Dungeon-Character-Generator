@@ -9,6 +9,8 @@ import SingleThought from "./pages/SingleThought";
 import Profile from "./pages/Profile";
 import ErrorPage from "./pages/Error";
 import RacesPage from "./pages/Races.js";
+import CharacterDashboard from "./pages/CharacterDashboard.jsx";
+import CreateCharacterPage from "./pages/CreateCharacterPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -18,7 +20,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Home />,
+        element: <CharacterDashboard  />,
       },
       {
         path: "/login",
@@ -29,9 +31,19 @@ const router = createBrowserRouter([
         element: <Signup />,
       },
       {
+        path: "/create-character",
+        element: <CreateCharacterPage />
+      },
+      
+      {
         path: "/profiles/:username",
         element: <Profile />,
       },
+      {
+        path: '/characters',
+        element: <CharacterDashboard />,
+      },
+      
       {
         path: "/me",
         element: <Profile />,
