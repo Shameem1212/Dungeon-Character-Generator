@@ -13,11 +13,10 @@ export const LOGIN_USER = gql`
 `;
 export const DELETE_CHARACTER = gql`
   mutation DeleteCharacter($id: ID!) {
-    deleteCharacter(id: $id) {
-      _id
-    }
+    deleteCharacter(id: $id)
   }
 `;
+
 
 export const ADD_USER = gql`
   mutation Mutation($input: UserInput!) {
@@ -58,6 +57,43 @@ export const ADD_COMMENT = gql`
         commentText
         createdAt
       }
+    }
+  }
+`;
+export const CREATE_CHARACTER = gql`
+  mutation CreateCharacter($input: CharacterInput!) {
+    createCharacter(input: $input) {
+      _id
+      name
+      class
+      race
+      subrace
+      level
+    }
+  }
+`;
+export const UPDATE_CHARACTER = gql`
+  mutation UpdateCharacter($id: ID!, $input: CharacterInput!) {
+    updateCharacter(id: $id, input: $input) {
+      _id
+      name
+      class
+      race
+      subrace
+      level
+      proficiencies
+      equipment
+      spells
+      stats {
+        strength
+        dexterity
+        constitution
+        intelligence
+        wisdom
+        charisma
+        health
+      }
+      notes
     }
   }
 `;
