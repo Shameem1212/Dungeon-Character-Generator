@@ -43,9 +43,10 @@ const Login = () => {
 
   return (
     <main className="flex-row justify-center mb-4">
-      <div className="col-12 col-lg-10">
-        <div className="card">
-          <h4 className="card-header bg-dark text-light p-2">Login</h4>
+      {/* Centering the content */}
+      <div className="login-page">
+        <div className="login-container">
+          <h4 className="card-header bg-dark text-light p-2 text-center">Login</h4>
           <div className="card-body">
             <form onSubmit={handleFormSubmit}>
               <input

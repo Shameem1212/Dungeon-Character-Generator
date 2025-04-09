@@ -66,33 +66,155 @@ const CharacterEditPage = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-4 text-center">Edit Character</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input name="name" value={formData.name} onChange={handleChange} className="w-full border p-2 rounded" placeholder="Name" />
-        <input name="class" value={formData.class} onChange={handleChange} className="w-full border p-2 rounded" placeholder="Class" />
-        <input name="race" value={formData.race} onChange={handleChange} className="w-full border p-2 rounded" placeholder="Race" />
-        <input name="subrace" value={formData.subrace} onChange={handleChange} className="w-full border p-2 rounded" placeholder="Subrace" />
-        <input name="level" value={formData.level} onChange={handleChange} type="number" className="w-full border p-2 rounded" placeholder="Level" />
+    <div style={containerStyle}>
+      <h1 style={headerStyle}>Edit Character</h1>
+      <form onSubmit={handleSubmit} style={formStyle}>
+        
+        <label style={labelStyle}>Character Name:</label>
+        <input
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          style={inputStyle}
+          placeholder="Name"
+        />
+        
+        <label style={labelStyle}>Class:</label>
+        <input
+          name="class"
+          value={formData.class}
+          onChange={handleChange}
+          style={inputStyle}
+          placeholder="Class"
+        />
+        
+        <label style={labelStyle}>Race:</label>
+        <input
+          name="race"
+          value={formData.race}
+          onChange={handleChange}
+          style={inputStyle}
+          placeholder="Race"
+        />
+        
+        <label style={labelStyle}>Subrace:</label>
+        <input
+          name="subrace"
+          value={formData.subrace}
+          onChange={handleChange}
+          style={inputStyle}
+          placeholder="Subrace"
+        />
+        
+        <label style={labelStyle}>Level:</label>
+        <input
+          name="level"
+          value={formData.level}
+          onChange={handleChange}
+          type="number"
+          style={inputStyle}
+          placeholder="Level"
+        />
 
-        <div className="grid grid-cols-2 gap-2">
+        <div style={statsGridStyle}>
           {Object.entries(formData.stats).map(([key, value]) => (
-            <input
-              key={key}
-              name={key}
-              value={value}
-              type="number"
-              onChange={handleChange}
-              className="w-full border p-2 rounded"
-              placeholder={key.charAt(0).toUpperCase() + key.slice(1)}
-            />
+            <div key={key}>
+              <label style={labelStyle}>{key.charAt(0).toUpperCase() + key.slice(1)}:</label>
+              <input
+                name={key}
+                value={value}
+                type="number"
+                onChange={handleChange}
+                style={inputStyle}
+                placeholder={key.charAt(0).toUpperCase() + key.slice(1)}
+              />
+            </div>
           ))}
         </div>
 
-        <textarea name="notes" value={formData.notes} onChange={handleChange} className="w-full border p-2 rounded" placeholder="Notes" />
-        <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Save Changes</button>
+        <label style={labelStyle}>Notes:</label>
+        <textarea
+          name="notes"
+          value={formData.notes}
+          onChange={handleChange}
+          style={textareaStyle}
+          placeholder="Notes"
+        />
+        
+        <button type="submit" style={submitButtonStyle}>Save Changes</button>
       </form>
     </div>
   );
 };
+
+const containerStyle: React.CSSProperties = {
+  maxWidth: '600px',
+  margin: '0 auto',
+  padding: '1rem',
+  backgroundColor: '#2c2f38',
+  borderRadius: '8px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
+};
+
+const headerStyle: React.CSSProperties = {
+  fontSize: '1.75rem',
+  fontWeight: '600',
+  marginBottom: '1.25rem',
+  textAlign: 'center',
+  color: '#e1c16e',
+};
+
+const formStyle: React.CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '0.75rem',
+};
+
+const inputStyle: React.CSSProperties = {
+  padding: '0.5rem',
+  fontSize: '0.95rem',
+  borderRadius: '5px',
+  border: '1px solid #555',
+  outline: 'none',
+  transition: 'border 0.3s ease',
+  color: '#fff',
+  backgroundColor: '#3d454d',
+};
+
+const statsGridStyle: React.CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '0.75rem',
+};
+
+const textareaStyle: React.CSSProperties = {
+  padding: '0.5rem',
+  fontSize: '0.95rem',
+  borderRadius: '5px',
+  border: '1px solid #555',
+  outline: 'none',
+  transition: 'border 0.3s ease',
+  color: '#fff',
+  backgroundColor: '#3d454d',
+  height: '120px',
+};
+
+const submitButtonStyle: React.CSSProperties = {
+  padding: '0.5rem 1.25rem',
+  fontSize: '1.1rem',
+  backgroundColor: '#c1440e',
+  color: '#fff',
+  borderRadius: '5px',
+  cursor: 'pointer',
+  border: 'none',
+  transition: 'background-color 0.3s ease',
+};
+
+const labelStyle: React.CSSProperties = {
+  fontSize: '0.95rem',
+  fontWeight: '500',
+  color: '#e1c16e',
+  marginBottom: '0.4rem',
+};
+
 export default CharacterEditPage;
