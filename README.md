@@ -46,5 +46,5 @@ A powerful and user-friendly full-stack application for creating, customizing, a
  **Clone the repository:**
 
 ```bash
-git clone https://github.com/your-username/dnd-character-creator.git
+git clone https://github.com/Shameem1212/Dungeon-Character-Generator
 cd dnd-character-creator
