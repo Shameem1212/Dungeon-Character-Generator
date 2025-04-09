@@ -14,18 +14,37 @@ const CharacterEditPage = () => {
     race: character.race,
     subrace: character.subrace || '',
     level: character.level,
-    stats: character.stats || {},
+    stats: {
+      strength: character.stats.strength || 0,
+      dexterity: character.stats.dexterity || 0,
+      constitution: character.stats.constitution || 0,
+      intelligence: character.stats.intelligence || 0,
+      wisdom: character.stats.wisdom || 0,
+      charisma: character.stats.charisma || 0,
+      health: character.stats.health || 0,
+    },
     proficiencies: character.proficiencies || [],
     equipment: character.equipment || [],
     spells: character.spells || [],
-    notes: character.notes || ''
+    notes: character.notes || '',
   });
 
   const [updateCharacter] = useMutation(UPDATE_CHARACTER);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+
+    if (name in formData.stats) {
+      setFormData({
+        ...formData,
+        stats: {
+          ...formData.stats,
+          [name]: parseInt(value)
+        },
+      });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -37,10 +56,6 @@ const CharacterEditPage = () => {
           input: {
             ...formData,
             level: parseInt(formData.level),
-            proficiencies: formData.proficiencies,
-            equipment: formData.equipment,
-            spells: formData.spells,
-            stats: formData.stats,
           },
         },
       });
@@ -59,6 +74,21 @@ const CharacterEditPage = () => {
         <input name="race" value={formData.race} onChange={handleChange} className="w-full border p-2 rounded" placeholder="Race" />
         <input name="subrace" value={formData.subrace} onChange={handleChange} className="w-full border p-2 rounded" placeholder="Subrace" />
         <input name="level" value={formData.level} onChange={handleChange} type="number" className="w-full border p-2 rounded" placeholder="Level" />
+
+        <div className="grid grid-cols-2 gap-2">
+          {Object.entries(formData.stats).map(([key, value]) => (
+            <input
+              key={key}
+              name={key}
+              value={value}
+              type="number"
+              onChange={handleChange}
+              className="w-full border p-2 rounded"
+              placeholder={key.charAt(0).toUpperCase() + key.slice(1)}
+            />
+          ))}
+        </div>
+
         <textarea name="notes" value={formData.notes} onChange={handleChange} className="w-full border p-2 rounded" placeholder="Notes" />
         <button type="submit" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Save Changes</button>
       </form>
