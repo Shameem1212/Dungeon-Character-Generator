@@ -2,7 +2,7 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import App from "./App.jsx";
-import Home from "./pages/Home";
+//import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import SingleThought from "./pages/SingleThought";
@@ -12,7 +12,12 @@ import RacesPage from "./pages/Races.js";
 
 
 import CharacterDashboard from "./pages/CharacterDashboard.jsx";
-import CreateCharacterPage from "./pages/CreateCharacterPage.jsx";
+import CharacterInfoPage from "./pages/CharacterInfoPage.tsx";
+import CharacterStatsPage from "./pages/CharacterStatsPage.tsx";
+import CharacterProficiencies from "./pages/CharacterProficienciesPage.tsx";
+import CharacterEquipmentPage from "./pages/CharacterEquipmentPage.tsx";
+import CharacterSpellsPage from "./pages/CharacterSpellsPage.tsx";
+import CharacterEditPage from "./pages/CharacterEditPage.tsx";
 
 
 
@@ -35,8 +40,13 @@ const router = createBrowserRouter([
         element: <Signup />,
       },
       {
-        path: "/create-character",
-        element: <CreateCharacterPage />
+        path: "/characterinfo",
+        element: <CharacterInfoPage />
+      },
+      {
+        path: "/character-stats",
+        element: <CharacterStatsPage />
+
       },
       
       {
@@ -47,7 +57,23 @@ const router = createBrowserRouter([
         path: '/characters',
         element: <CharacterDashboard />,
       },
-      
+      {
+        path: '/character-equipment',
+        element: <CharacterEquipmentPage />,
+      },
+      {
+        path: '/character-proficiencies',
+        element: <CharacterProficiencies />,
+
+      },
+      {
+        path: "/character-spells",
+        element: <CharacterSpellsPage />,
+      },
+      {
+        path: "/character-edit",
+        element: <CharacterEditPage />,
+      },
       {
         path: "/me",
         element: <Profile />,
