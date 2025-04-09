@@ -1,32 +1,49 @@
-# 🧙‍♂️ Dungeons & Dragons Character Creator
+# 🧙‍♂️ DnD Character Creator
 
-A full-stack DnD character creation tool built with **React**, **TypeScript**, and **GraphQL**. Easily generate and customize characters, pick classes, assign attributes, and manage spells — all through a sleek and responsive interface.
-
-## ✨ Features
-
-- ⚔️ Choose from all official DnD 5e races and classes
-- 🧠 Allocate ability scores using point-buy or manual input
-- 🎒 Select  proficiencies
-- 🔁 Save, update, and load characters from a GraphQL backend
-- 🌐 Responsive design with React and Bootstrap CSS
-- ✅ Fully typed with TypeScript for safety and scalability
+A powerful and user-friendly full-stack application for creating, customizing, and managing **Dungeons & Dragons** characters. Built with a modern tech stack including **React**, **TypeScript**, **Vite**, **Bootstrap**, **GraphQL**, **MongoDB**, and **Mongoose**.
 
 ---
 
-## 🚀 Tech Stack
+## ⚔️ Features
 
-| Frontend  | Backend        | Tools & Libraries        |
-|-----------|----------------|--------------------------|
-| React     | GraphQL Server | Apollo Client / Server   |
-| TypeScript| Node.js        | ESLint & Prettier        |
-| Bootstrap  | Express        | Vite (or Create React App) |
-| React Router | PostgreSQL (optional) | dotenv, zod, yup     |
+- 🧝 Create fully-custom DnD characters (race, class, background, stats, and more)
+- 🧠 Intelligent form logic based on character selections
+- 🔁 Save and edit characters via GraphQL-powered API
+- 🗃 Persistent data storage using MongoDB
+- ⚡ Fast development experience with Vite and TypeScript
+- 💅 Responsive and accessible UI with Bootstrap 5
+- 📄 View and manage saved characters
 
 ---
 
-## 🛠️ Installation
+## 🛠 Tech Stack
 
-### 1. Clone the Repository
+| Tech        | Purpose                                  |
+|-------------|-------------------------------------------|
+| React       | UI library for building interactive UIs  |
+| TypeScript  | Type-safe JavaScript development         |
+| Vite        | Fast frontend build tool and dev server  |
+| Bootstrap   | CSS framework for responsive design      |
+| GraphQL     | Flexible API query language              |
+| Apollo Client | Communicate with GraphQL from frontend |
+| MongoDB     | NoSQL database for storing characters    |
+| Mongoose    | ODM for MongoDB and schema enforcement   |
+| Express     | Backend server framework                 |
+| Apollo Server | GraphQL server integration             |
+
+---
+
+## 🚀 Getting Started
+
+### 📦 Prerequisites
+
+- Node.js (v18+)
+- npm or yarn
+- MongoDB (local or Atlas)
+
+### 🔧 Installation
+
+ **Clone the repository:**
 
 ```bash
 git clone https://github.com/Shameem1212/Dungeon-Character-Generator
