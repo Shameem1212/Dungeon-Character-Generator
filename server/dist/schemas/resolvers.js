@@ -1,27 +1,16 @@
 import { Thought, User } from "../models/index.js";
+import Character from "../models/Character.js";
 import { signToken, AuthenticationError } from "../utils/auth.js";
 const resolvers = {
     Query: {
-        users: async () => {
-            return User.find().populate("thoughts");
-        },
-        user: async (_parent, { username }) => {
-            return User.findOne({ username }).populate("thoughts");
-        },
-        thoughts: async () => {
-            return await Thought.find().sort({ createdAt: -1 });
-        },
-        thought: async (_parent, { thoughtId }) => {
-            return await Thought.findOne({ _id: thoughtId });
-        },
-        // Query to get the authenticated user's information
-        // The 'me' query relies on the context to check if the user is authenticated
+        users: async () => User.find().populate("thoughts"),
+        user: async (_parent, { username }) => User.findOne({ username }).populate("thoughts"),
+        thoughts: async () => Thought.find().sort({ createdAt: -1 }),
+        thought: async (_parent, { thoughtId }) => Thought.findOne({ _id: thoughtId }),
         me: async (_parent, _args, context) => {
-            // If the user is authenticated, find and return the user's information along with their thoughts
             if (context.user) {
                 return User.findOne({ _id: context.user._id }).populate("thoughts");
             }
-            // If the user is not authenticated, throw an AuthenticationError
             throw new AuthenticationError("Could not authenticate user.");
         },
         getRaces: async () => {
@@ -35,43 +24,106 @@ const resolvers = {
                 return [];
             }
         },
+        getSubraces: async (_, { raceIndex }) => {
+            try {
+                const response = await fetch("https://www.dnd5eapi.co/api/subraces");
+                const data = await response.json();
+                const subraceResults = data.results;
+                const matchingSubraces = [];
+                for (const subrace of subraceResults) {
+                    const subraceResponse = await fetch(`https://www.dnd5eapi.co${subrace.url}`);
+                    const subraceDetails = await subraceResponse.json();
+                    const belongsToRace = subraceDetails.races?.some((race) => race.index === raceIndex);
+                    if (belongsToRace) {
+                        matchingSubraces.push({
+                            index: subraceDetails.index,
+                            name: subraceDetails.name,
+                            url: subraceDetails.url,
+                        });
+                    }
+                }
+                return matchingSubraces;
+            }
+            catch (error) {
+                console.error("Error fetching or filtering subraces:", error);
+                return [];
+            }
+        },
         getClasses: async () => {
             try {
-                const response = await fetch('https://www.dnd5eapi.co/api/classes');
+                const response = await fetch("https://www.dnd5eapi.co/api/classes");
                 const data = await response.json();
                 return data.results;
             }
             catch (error) {
-                console.error('Error fetching classes:', error);
+                console.error("Error fetching classes:", error);
                 return [];
             }
+        },
+        getProficiencies: async (_, { classIndex, raceIndex }) => {
+            try {
+                const staticProfs = [];
+                let optionalProfs = [];
+                let chooseAmount = 0;
+                if (classIndex) {
+                    const classRes = await fetch(`https://www.dnd5eapi.co/api/classes/${classIndex}`);
+                    const classData = await classRes.json();
+                    if (Array.isArray(classData.proficiencies)) {
+                        staticProfs.push(...classData.proficiencies);
+                    }
+                    const choice = classData.proficiency_choices?.[0];
+                    if (choice && Array.isArray(choice.from)) {
+                        chooseAmount = choice.choose || 0;
+                        optionalProfs = choice.from.map((entry) => {
+                            if (entry.option?.item)
+                                return entry.option.item;
+                            return entry;
+                        });
+                    }
+                }
+                if (raceIndex) {
+                    const raceRes = await fetch(`https://www.dnd5eapi.co/api/races/${raceIndex}`);
+                    const raceData = await raceRes.json();
+                    if (Array.isArray(raceData.starting_proficiencies)) {
+                        staticProfs.push(...raceData.starting_proficiencies);
+                    }
+                }
+                return {
+                    static: staticProfs,
+                    optional: optionalProfs,
+                    chooseAmount,
+                };
+            }
+            catch (error) {
+                console.error("Error fetching proficiencies:", error);
+                return {
+                    static: [],
+                    optional: [],
+                    chooseAmount: 0,
+                };
+            }
+        },
+        getCharacters: async (_parent, _args, context) => {
+            if (!context.user) {
+                throw new AuthenticationError("Not logged in.");
+            }
+            return Character.find({ owner: context.user._id });
         },
     },
     Mutation: {
         addUser: async (_parent, { input }) => {
-            // Create a new user with the provided username, email, and password
             const user = await User.create({ ...input });
-            // Sign a token with the user's information
             const token = signToken(user.username, user.email, user._id);
-            // Return the token and the user
             return { token, user };
         },
         login: async (_parent, { email, password }) => {
-            // Find a user with the provided email
             const user = await User.findOne({ email });
-            // If no user is found, throw an AuthenticationError
-            if (!user) {
+            if (!user)
                 throw new AuthenticationError("Could not authenticate user.");
-            }
-            // Check if the provided password is correct
             const correctPw = await user.isCorrectPassword(password);
-            // If the password is incorrect, throw an AuthenticationError
-            if (!correctPw) {
+            if (!correctPw)
                 throw new AuthenticationError("Could not authenticate user.");
-            }
-            // Sign a token with the user's information
             const token = signToken(user.username, user.email, user._id);
-            // Return the token and the user
             return { token, user };
         },
         addThought: async (_parent, { input }, context) => {
@@ -81,7 +133,6 @@ const resolvers = {
                 return thought;
             }
             throw AuthenticationError;
-            ("You need to be logged in!");
         },
         addComment: async (_parent, { thoughtId, commentText }, context) => {
             if (context.user) {
@@ -89,10 +140,7 @@ const resolvers = {
                     $addToSet: {
                         comments: { commentText, commentAuthor: context.user.username },
                     },
-                }, {
-                    new: true,
-                    runValidators: true,
-                });
+                }, { new: true, runValidators: true });
             }
             throw AuthenticationError;
         },
@@ -102,13 +150,32 @@ const resolvers = {
                     _id: thoughtId,
                     thoughtAuthor: context.user.username,
                 });
-                if (!thought) {
+                if (!thought)
                     throw AuthenticationError;
-                }
                 await User.findOneAndUpdate({ _id: context.user._id }, { $pull: { thoughts: thought._id } });
                 return thought;
             }
             throw AuthenticationError;
+        },
+        deleteCharacter: async (_parent, { id }, context) => {
+            if (!context.user)
+                throw new AuthenticationError("You must be logged in.");
+            const result = await Character.deleteOne({ _id: id, owner: context.user._id });
+            return result.deletedCount > 0;
+        },
+        createCharacter: async (_parent, { input }, context) => {
+            if (!context.user)
+                throw new AuthenticationError("You must be logged in.");
+            const newCharacter = await Character.create({ ...input, owner: context.user._id });
+            return newCharacter;
+        },
+        updateCharacter: async (_, { id, input }, context) => {
+            if (!context.user)
+                throw new AuthenticationError("You must be logged in.");
+            const updatedCharacter = await Character.findOneAndUpdate({ _id: id, owner: context.user._id }, input, { new: true });
+            if (!updatedCharacter)
+                throw new Error("Character not found or not authorized.");
+            return updatedCharacter;
         },
         removeComment: async (_parent, { thoughtId, commentId }, context) => {
             if (context.user) {

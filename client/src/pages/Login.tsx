@@ -1,4 +1,4 @@
-import { useState, useEffect, type FormEvent, type ChangeEvent } from 'react';
+import { useState, type FormEvent, type ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { LOGIN_USER } from '../utils/mutations';
@@ -7,7 +7,6 @@ import Auth from '../utils/auth';
 const Login = () => {
   const [formState, setFormState] = useState({ email: '', password: '' });
   const [login, { error }] = useMutation(LOGIN_USER);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // ✅ new redirect flag
   const navigate = useNavigate();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -21,18 +20,19 @@ const Login = () => {
       const { data } = await login({
         variables: { ...formState },
       });
-  
+
       if (data?.login?.token) {
         Auth.login(data.login.token);
-  
+
         // Delay navigation slightly to allow Auth.login to finish
         setTimeout(() => {
           navigate('/characters');
-        }, 100); // just 100ms is usually enough
+        }, 100);
       }
     } catch (e) {
       console.error(e);
     }
+
     console.log('Token in localStorage:', localStorage.getItem('id_token'));
 
     setFormState({
@@ -40,14 +40,6 @@ const Login = () => {
       password: '',
     });
   };
-  
-
-  // ✅ Perform redirect after login is confirmed
-  useEffect(() => {
-    if (isLoggedIn) {
-      navigate('/characters');
-    }
-  }, [isLoggedIn, navigate]);
 
   return (
     <main className="flex-row justify-center mb-4">

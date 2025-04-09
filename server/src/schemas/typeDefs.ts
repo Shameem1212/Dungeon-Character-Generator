@@ -31,20 +31,88 @@ const typeDefs = `
     email: String!
     password: String!
   }
-  
+
   type Auth {
     token: ID!
     user: User
   }
+
   type Race {
     index: String!
     name: String!
     url: String!
   }
-     type Class {
+
+  type Class {
     index: String!
     name: String!
     url: String!
+  }
+
+  type Subrace {
+    index: String
+    name: String
+    url: String
+  }
+
+  input CharacterInput {
+    name: String!
+    class: String!
+    race: String!
+    subrace: String
+    level: Int!
+    stats: StatsInput
+    proficiencies: [String]
+    equipment: [String]
+    spells: [String]
+    notes: String
+  }
+
+  input StatsInput {
+    strength: Int
+    dexterity: Int
+    constitution: Int
+    intelligence: Int
+    wisdom: Int
+    charisma: Int
+    health: Int
+  }
+
+  type Character {
+    _id: ID!
+    name: String!
+    class: String!
+    race: String!
+    subrace: String
+    level: Int!
+    owner: ID
+    stats: Stats
+    proficiencies: [String]
+    equipment: [String]
+    spells: [String]
+    notes: String
+  }
+
+  type Stats {
+    strength: Int
+    dexterity: Int
+    constitution: Int
+    intelligence: Int
+    wisdom: Int
+    charisma: Int
+    health: Int
+  }
+
+  type Proficiency {
+    index: String
+    name: String
+    url: String
+  }
+
+  type ProficiencyResult {
+    static: [Proficiency]
+    optional: [Proficiency]
+    chooseAmount: Int
   }
 
   type Query {
@@ -54,7 +122,10 @@ const typeDefs = `
     thought(thoughtId: ID!): Thought
     me: User
     getRaces: [Race]
+    getSubraces(raceIndex: String!): [Subrace]
     getClasses: [Class]
+    getProficiencies(classIndex: String!, raceIndex: String!): ProficiencyResult
+    getCharacters: [Character]
   }
 
   type Mutation {
@@ -64,6 +135,9 @@ const typeDefs = `
     addComment(thoughtId: ID!, commentText: String!): Thought
     removeThought(thoughtId: ID!): Thought
     removeComment(thoughtId: ID!, commentId: ID!): Thought
+    createCharacter(input: CharacterInput!): Character
+    deleteCharacter(id: ID!): Boolean
+    updateCharacter(id: ID!, input: CharacterInput!): Character
   }
 `;
 

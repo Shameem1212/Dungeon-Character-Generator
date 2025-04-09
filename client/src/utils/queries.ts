@@ -32,7 +32,21 @@ export const GET_CHARACTERS = gql`
       name
       class
       race
+      subrace
       level
+      proficiencies
+      equipment
+      spells
+      notes
+      stats {
+        strength
+        dexterity
+        constitution
+        intelligence
+        wisdom
+        charisma
+        health
+      }
     }
   }
 `;
@@ -87,5 +101,37 @@ export const GET_CLASSES = gql`
       name
       url
     }
+  }
+`;
+export const GET_SUBRACES = gql`
+  query GetSubraces($raceIndex: String!) {
+    getSubraces(raceIndex: $raceIndex) {
+      name
+      index
+    }
+  }
+`;
+
+
+export const GET_PROFICIENCIES = gql`
+  query GetProficiencies($classIndex: String!, $raceIndex: String!) {
+    getProficiencies(classIndex: $classIndex, raceIndex: $raceIndex) {
+      static {
+        index
+        name
+        url
+      }
+      optional {
+        index
+        name
+        url
+      }
+      chooseAmount
+    }
+  }
+`;
+export const DELETE_CHARACTER = gql`
+  mutation DeleteCharacter($id: ID!) {
+    deleteCharacter(id: $id)
   }
 `;
