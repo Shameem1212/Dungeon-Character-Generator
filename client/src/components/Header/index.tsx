@@ -5,7 +5,6 @@ import Auth from '../../utils/auth';
 const Header = () => {
   const logout = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    // Logs the user out by calling the logout method from Auth
     Auth.logout();
   };
 
@@ -16,7 +15,6 @@ const Header = () => {
           <Link className="text-light" to="/">
             <h1 className="m-0">DND Character Creator</h1>
           </Link>
-          <p className="m-0">Hello.</p>
         </div>
         <div className="header-buttons">
           {Auth.loggedIn() ? (

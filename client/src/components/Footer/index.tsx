@@ -5,12 +5,12 @@ const Footer: React.FC = () => {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    if(window.history.length > 1) { // Check if there is a previous page in the history stack
+    if (window.history.length > 1) { // Check if there is a previous page in the history stack
       navigate(-1);
     } else {
       navigate('/');
     }
-  }
+  };
 
   return (
     <footer className="footer">
