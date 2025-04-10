@@ -39,16 +39,14 @@ const Signup = () => {
 
   return (
     <main className="flex-row justify-center mb-4">
-      <div className="signup-page">
-        <div className="login-container">
-          <h4 className="card-header bg-dark text-light p-2 text-center large-header">Sign Up</h4>
+      <div className="col-12 col-lg-10">
+        <div className="card">
+          <h4 className="card-header bg-dark text-light p-2">Sign Up</h4>
           <div className="card-body">
             {data ? (
               <p>
                 Success! You may now head{' '}
-                <Link to="/" className="btn btn-link">
-                  back to the homepage.
-                </Link>
+                <Link to="/">back to the homepage.</Link>
               </p>
             ) : (
               <form onSubmit={handleFormSubmit}>
