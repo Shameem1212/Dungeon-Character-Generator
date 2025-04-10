@@ -37,10 +37,9 @@ const startApolloServer = async () => {
     })
   );
 
-  // ✅ Corrected path to Vite build output for Render
+  // ✅ Render-compatible static build path for Vite
   if (process.env.NODE_ENV === 'production') {
-    const clientDistPath = path.resolve(__dirname, '../../../client/dist');
-
+    const clientDistPath = path.resolve(process.cwd(), 'client/dist');
     app.use(express.static(clientDistPath));
 
     app.get('*', (_req: Request, res: Response) => {
@@ -49,8 +48,8 @@ const startApolloServer = async () => {
   }
 
   app.listen(PORT, () => {
-    console.log(`API server running on port ${PORT}!`);
-    console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
+    console.log(`✅ API server running on port ${PORT}!`);
+    console.log(`✅ Use GraphQL at http://localhost:${PORT}/graphql`);
   });
 };
 
