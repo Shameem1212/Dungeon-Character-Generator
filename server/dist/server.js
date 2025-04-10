@@ -1,10 +1,14 @@
 import express from 'express';
 import path from 'node:path';
+import { fileURLToPath } from 'url';
 import db from './config/connection.js';
-import { ApolloServer } from '@apollo/server'; // Note: Import from @apollo/server-express
+import { ApolloServer } from '@apollo/server';
 import { expressMiddleware } from '@apollo/server/express4';
 import { typeDefs, resolvers } from './schemas/index.js';
 import { authenticateToken } from './utils/auth.js';
+// Fix for __dirname in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const server = new ApolloServer({
     typeDefs,
     resolvers
@@ -19,7 +23,7 @@ const startApolloServer = async () => {
     app.use('/graphql', expressMiddleware(server, {
         context: async ({ req }) => {
             const authData = await authenticateToken({ req });
-            return authData; // should be { user: data }
+            return authData;
         }
     }));
     if (process.env.NODE_ENV === 'production') {
