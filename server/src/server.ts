@@ -14,7 +14,7 @@ const __dirname = path.dirname(__filename);
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
 });
 
 const startApolloServer = async () => {
@@ -33,16 +33,18 @@ const startApolloServer = async () => {
       context: async ({ req }) => {
         const authData = await authenticateToken({ req });
         return authData;
-      }
+      },
     })
   );
 
-  // Adjusted path for Render deployment
+  // ✅ Corrected path to Vite build output for Render
   if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.resolve(__dirname, '../../client/dist')));
+    const clientDistPath = path.resolve(__dirname, '../../../client/dist');
+
+    app.use(express.static(clientDistPath));
 
     app.get('*', (_req: Request, res: Response) => {
-      res.sendFile(path.resolve(__dirname, '../../client/dist/index.html'));
+      res.sendFile(path.join(clientDistPath, 'index.html'));
     });
   }
 
