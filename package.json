@@ -4,18 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server/server.js",
+    "start": "node server/dist/server.js",
     "start:dev": "concurrently \"cd server && npm run watch\" \"wait-on tcp:3001 && cd client && npm run dev\"",
     "server": "cd server && npm start",
     "server:dev": "cd server && npm run dev",
-    "install": "cd server && npm i && cd ../client && npm i",
+    "install": "cd server && npm install && cd ../client && npm install",
     "client:build": "cd client && npm run build",
     "client:dev": "cd client && npm run dev",
     "seed": "cd server && npm run seed",
-    "build": "concurrently \"cd server && npm run build\" \"cd client && npm run build\"",
-    "render-build": "npm install && npm run build"
-    
-    
+    "build": "npm run server:build && npm run client:build",
+    "server:build": "cd server && npm run build",
+    "render-build": "npm install && npm run build",
+    "postinstall": "npm install --prefix client && npm install --prefix server"
   },
   "keywords": [],
   "author": "",
