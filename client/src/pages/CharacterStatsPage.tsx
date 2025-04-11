@@ -1,7 +1,7 @@
 import { FormEvent, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
-import { CREATE_CHARACTER } from '../utils/mutations';
+//import { useMutation } from '@apollo/client';
+//import { CREATE_CHARACTER } from '../utils/mutations';
 
 const CharacterStatsPage = () => {
   const navigate = useNavigate();
